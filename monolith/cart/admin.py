@@ -1,10 +1,16 @@
 from django.contrib import admin
 from .models import Cart, CartItem
 
-@admin.register(Cart)
 class CartAdmin(admin.ModelAdmin):
-    list_display = ('customer', 'created_at', 'total_items', 'total_price')
+    list_display = ('id', 'customer', 'total_items', 'total_price', 'created_at')
 
-@admin.register(CartItem)
-class CartItemAdmin(admin.ModelAdmin):
-    list_display = ('cart', 'book', 'quantity')
+    def total_items(self, obj):
+        return obj.cartitem_set.count()  # Tính tổng số item trong giỏ
+    total_items.short_description = 'Tổng Item'  # Tên cột trong admin (tùy chọn)
+
+    def total_price(self, obj):
+        return sum(item.book.price * item.quantity for item in obj.cartitem_set.all())  # Tính tổng giá
+    total_price.short_description = 'Tổng Giá'  # Tên cột trong admin (tùy chọn)
+
+admin.site.register(Cart, CartAdmin)
+admin.site.register(CartItem)

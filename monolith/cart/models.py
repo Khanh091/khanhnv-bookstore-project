@@ -1,10 +1,10 @@
 from django.db import models
-from accounts.models import Customer
-from books.models import Book
+
+# Không cần import Customer hay Book nữa
 
 class Cart(models.Model):
     id = models.AutoField(primary_key=True)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    customer = models.ForeignKey('accounts.Customer', on_delete=models.CASCADE)  # Dùng string 'app_name.ModelName'
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -16,7 +16,7 @@ class Cart(models.Model):
 class CartItem(models.Model):
     id = models.AutoField(primary_key=True)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.RESTRICT)
+    book = models.ForeignKey('books.Book', on_delete=models.RESTRICT)  # Dùng string 'app_name.ModelName'
     quantity = models.IntegerField(default=1)
 
     class Meta:
