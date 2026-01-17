@@ -38,12 +38,12 @@ class LoginView(View):
             password = form.cleaned_data['password']
             try:
                 customer = Customer.objects.get(email=email, password=password)
-                request.session['customer_id'] = customer.id  # Lưu session
+                request.session['customer_id'] = customer.id
                 return redirect('/books/catalog/')
             except Customer.DoesNotExist:
                 messages.error(request, 'Invalid email or password.')
         return render(request, 'accounts/login.html', {'form': form})
 
 def logout_view(request):
-    request.session.flush()  # Xóa session
+    request.session.flush()
     return redirect('login')

@@ -15,11 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')),  # Urls cho accounts app
-    path('books/', include('books.urls')),        # Urls cho books app
-    path('cart/', include('cart.urls')),          # Urls cho cart app
-    path('', include('books.urls')),              # Default redirect to books
+    path('accounts/', include('accounts.urls')),
+    path('books/', include('books.urls')),
+    path('cart/', include('cart.urls')),
+    path('', RedirectView.as_view(url='/books/catalog/'), name='home'),  # Redirect root to catalog
 ]
