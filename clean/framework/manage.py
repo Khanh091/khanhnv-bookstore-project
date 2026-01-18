@@ -3,6 +3,15 @@
 import os
 import sys
 
+# Thư mục project root (parent của folder framework)
+# clean/ (project root)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(BASE_DIR)
+
+# Thêm clean/ vào Python path để import các module domain, interfaces, infrastructure, usecases
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
 
 def main():
     """Run administrative tasks."""

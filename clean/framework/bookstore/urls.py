@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from django.views.generic import RedirectView
-from framework.views import RegisterView, LoginView, logout_view, BookCatalogView, CartView
+from .views import RegisterView, LoginView, logout_view, BookCatalogView, CartView
 
 urlpatterns = [
     path('admin/', admin.site.urls),

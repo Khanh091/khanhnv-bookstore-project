@@ -2,17 +2,30 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django import forms
 from django.contrib import messages
-from usecases.usecases import RegisterCustomerUseCase, LoginCustomerUseCase, GetBookCatalogUseCase, AddToCartUseCase, GetCartContentsUseCase
-from infrastructure.repositories import CustomerRepositoryImpl, BookRepositoryImpl, CartRepositoryImpl, CartItemRepositoryImpl
 
-# Inject repos
+# Import sau khi path đã đúng
+from usecases.usecases import (
+    RegisterCustomerUseCase,
+    LoginCustomerUseCase,
+    GetBookCatalogUseCase,
+    AddToCartUseCase,
+    GetCartContentsUseCase
+)
+from infrastructure.repositories import (
+    CustomerRepositoryImpl,
+    BookRepositoryImpl,
+    CartRepositoryImpl,
+    CartItemRepositoryImpl
+)
+
+# Inject repositories
 customer_repo = CustomerRepositoryImpl()
 book_repo = BookRepositoryImpl()
 cart_repo = CartRepositoryImpl()
 cart_item_repo = CartItemRepositoryImpl()
 
 class RegisterForm(forms.Form):
-    name = forms.CharField()
+    name = forms.CharField(max_length=255)
     email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
 
@@ -68,10 +81,12 @@ class BookCatalogView(View):
         if 'customer_id' not in request.session:
             messages.error(request, 'Please login to add to cart.')
             return redirect('login')
+
         book_id = request.POST.get('book_id')
         quantity = int(request.POST.get('quantity', 1))
+
         usecase = AddToCartUseCase(book_repo, cart_repo, cart_item_repo)
-        success = usecase.execute(request.session['customer_id'], book_id, quantity, request)
+        usecase.execute(request.session['customer_id'], book_id, quantity, request)
         return redirect('book_catalog')
 
 class CartView(View):
@@ -79,6 +94,10 @@ class CartView(View):
         if 'customer_id' not in request.session:
             messages.error(request, 'Please login to view cart.')
             return redirect('login')
+
         usecase = GetCartContentsUseCase(cart_repo, book_repo)
         cart_data = usecase.execute(request.session['customer_id'])
-        return render(request, 'cart_view.html', {'items': cart_data['items'], 'total': cart_data['total']})
+        return render(request, 'cart_view.html', {
+            'items': cart_data['items'],
+            'total': cart_data['total']
+        })

@@ -13,6 +13,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'infrastructure',  # Django app chứa models
 ]
 
 MIDDLEWARE = [
@@ -30,7 +31,7 @@ ROOT_URLCONF = 'bookstore.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'framework' / 'templates'],  # Global templates
+        'DIRS': [BASE_DIR / 'framework' / 'templates'],  # trỏ đến clean/framework/templates/
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -1,4 +1,4 @@
-from domain.entities import Customer, CartItem
+from domain.entities import Customer, CartItem, Book
 from django.contrib import messages
 
 class RegisterCustomerUseCase:
