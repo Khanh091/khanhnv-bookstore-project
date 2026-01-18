@@ -11,7 +11,12 @@ Hệ thống Bookstore được chia thành 4 microservices độc lập:
 
 ```
 micro/
-├── gateway-service/      # API Gateway - Frontend (tích hợp tất cả services)
+├── frontend/             # Frontend riêng biệt (HTML/CSS/JS thuần)
+│   ├── index.html       # Login/Register page
+│   ├── catalog.html     # Book catalog page
+│   ├── cart.html        # Shopping cart page
+│   └── *.js, *.css     # JavaScript & CSS files
+├── gateway-service/      # API Gateway - Frontend Django (tùy chọn)
 │   └── gateway/          # Gateway views & templates
 ├── customer-service/     # Customer service
 │   └── customers/        # Customer model & API
@@ -85,7 +90,15 @@ python manage.py runserver 8003
 
 ### 4. Truy cập
 
+**Option 1: Frontend riêng biệt (Khuyến nghị)**
+- Mở file `micro/frontend/index.html` trong trình duyệt
+- Hoặc chạy: `cd micro/frontend && python -m http.server 8080`
+- Truy cập: http://localhost:8080
+
+**Option 2: Gateway Service Django**
 - **Frontend/Gateway**: http://127.0.0.1:8000/
+
+**API Endpoints:**
 - **Customer API**: http://127.0.0.1:8001/api/customers/
 - **Book API**: http://127.0.0.1:8002/api/books/
 - **Cart API**: http://127.0.0.1:8003/api/carts/
@@ -108,15 +121,37 @@ python manage.py runserver 8003
 - `POST /api/carts/add/` - Add book to cart
 - `GET /api/carts/<customer_id>/` - Get cart contents
 
-## Frontend (Gateway Service)
+## Frontend Options
 
-Gateway service (port 8000) là service riêng biệt tích hợp tất cả microservices:
+### Option 1: Frontend riêng biệt (Khuyến nghị) ⭐
+
+Frontend sử dụng HTML/CSS/JavaScript thuần, không phụ thuộc Django:
+- `index.html` - Login/Register page
+- `catalog.html` - Book catalog page
+- `cart.html` - Shopping cart page
+
+**Lợi ích:**
+- ✅ Không cần Django server cho frontend
+- ✅ Đơn giản, nhanh, dễ deploy
+- ✅ Có thể host bất kỳ đâu (static hosting)
+- ✅ Không có server-side rendering overhead
+
+**Cách sử dụng:**
+```bash
+cd micro/frontend
+python -m http.server 8080
+# Hoặc chỉ cần mở index.html trong trình duyệt
+```
+
+### Option 2: Gateway Service Django
+
+Gateway service (port 8000) là service Django tích hợp tất cả microservices:
 - `/register/` - Registration page
 - `/login/` - Login page
 - `/catalog/` - Book catalog page
 - `/cart/` - Shopping cart page
 
-Gateway tự động gọi các microservices APIs để lấy và hiển thị dữ liệu.
+**Lưu ý:** Cần chạy migrations cho gateway-service trước khi sử dụng.
 
 ## Lợi ích của Gateway riêng biệt
 
