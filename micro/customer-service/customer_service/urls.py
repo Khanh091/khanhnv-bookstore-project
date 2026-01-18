@@ -16,7 +16,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from customers import views as customer_views
+from gateway import views as gateway_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # API endpoints
+    path('api/customers/register/', customer_views.register, name='api_register'),
+    path('api/customers/login/', customer_views.login, name='api_login'),
+    path('api/customers/<int:customer_id>/', customer_views.get_customer, name='api_get_customer'),
+    # Gateway/frontend endpoints
+    path('', gateway_views.CatalogView.as_view(), name='home'),
+    path('register/', gateway_views.RegisterView.as_view(), name='register'),
+    path('login/', gateway_views.LoginView.as_view(), name='login'),
+    path('logout/', gateway_views.logout_view, name='logout'),
+    path('catalog/', gateway_views.CatalogView.as_view(), name='catalog'),
+    path('cart/', gateway_views.CartView.as_view(), name='cart'),
 ]
