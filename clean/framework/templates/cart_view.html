@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping Cart</title>
+</head>
+<body>
+    <h1>Your Cart</h1>
+    <a href="{% url 'book_catalog' %}">Back to Catalog</a> | <a href="{% url 'logout' %}">Logout</a>
+    <ul>
+        {% for item in items %}
+            <li>{{ item.book.title }} - Quantity: {{ item.quantity }} - Subtotal: ${{ item.book.price|floatformat:2 }}</li>
+        {% endfor %}
+    </ul>
+    <p>Total: ${{ total|floatformat:2 }}</p>
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
