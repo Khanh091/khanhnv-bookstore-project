@@ -1,6 +1,6 @@
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent  # Lên 3 level để đến clean/
+BASE_DIR = Path(__file__).resolve().parent.parent.parent  # Lên 3 level để đến clean/ (bookstore -> framework -> clean)
 
 SECRET_KEY = 'django-insecure-your-secret-key-here'
 DEBUG = True
@@ -31,7 +31,7 @@ ROOT_URLCONF = 'bookstore.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'framework' / 'templates'],  # trỏ đến clean/framework/templates/
+        'DIRS': [str(BASE_DIR / 'framework' / 'templates')],  # trỏ đến clean/framework/templates/
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
