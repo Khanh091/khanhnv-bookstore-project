@@ -1,5 +1,5 @@
 """
-URL configuration for customer_service project.
+URL configuration for gateway_service project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.2/topics/http/urls/
@@ -16,12 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from customers import views
+from gateway import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # API endpoints only
-    path('api/customers/register/', views.register, name='api_register'),
-    path('api/customers/login/', views.login, name='api_login'),
-    path('api/customers/<int:customer_id>/', views.get_customer, name='api_get_customer'),
+    path('', views.CatalogView.as_view(), name='home'),
+    path('register/', views.RegisterView.as_view(), name='register'),
+    path('login/', views.LoginView.as_view(), name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('catalog/', views.CatalogView.as_view(), name='catalog'),
+    path('cart/', views.CartView.as_view(), name='cart'),
 ]
